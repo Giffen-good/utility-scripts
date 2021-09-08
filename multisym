@@ -1,0 +1,12 @@
+#!/bin/bash
+
+TARGET="$1"
+for destination in "$@"; do
+	if [ -z ${IS_DESTINATION_ARG+x} ];
+	then 
+		IS_DESTINATION_ARG=true
+	else
+    		ln -s $TARGET "$destination"
+	fi
+done
+

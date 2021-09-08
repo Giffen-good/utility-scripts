@@ -1,0 +1,47 @@
+#!/bin/bash
+
+
+CLEAR='\033[0m'
+RED='\033[0;31m'
+
+function usage() {
+  if [ -n "$1" ]; then
+    echo -e "${RED}👉 $1${CLEAR}\n";
+  fi
+  echo "Usage: $0 [-d directory] "
+  echo "  -d  --directory	   Custom parent directory. Defaults to pwd"
+  echo "  -n  --name		   Canonical Name for temp folder"
+  echo ""
+  echo "Example: $0 -d /path/to/directory/ tmp-folder"
+  exit 1
+}
+
+# verify params
+
+
+
+
+while getopts ":d:n:" arg; do
+  case $arg in
+    d) DIRECTORY=$OPTARG;;
+    n) NAME=$OPTARG;;
+  esac
+done
+
+
+if [ -z "$DIRECTORY" ]; then DIRECTORY="$HOME"; fi;
+
+if [ -d "${DIRECTORY}" ];
+then
+	TMP=$(mktemp -d)
+	ln -s $TMP $DIRECTORY$NAME 
+	echo "ln -s $TMP $DIRECTORY$NAME" 
+	echo "TMP directory successfully linked to ${DIRECTORY}${NAME}"
+else
+	ERR="ERROR: dirname is invalid"
+	echo "$ERR"
+	$ERR>%2
+	2>%1
+	exit 2
+fi
+

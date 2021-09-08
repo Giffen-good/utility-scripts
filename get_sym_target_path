@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# startup scripts in pwd
+
+# Get Full list of executables in $PATH
+IFS=':'
+arg="$1"
+
+if [ -d "$1" ];
+then
+    echo "Err: Argument is a directory" >&2
+    exit 1
+fi
+
+executables_in_path=$(find -L $PATH -type f '(' -perm -u+x -o -perm -g+x -o -perm -o+x ')' | grep "$1" | head -1 )
+if [ -z "$executables_in_path" ];
+then
+    echo "Err: No excutable symlink  \"$1\" found in \$PATH" >&2
+    exit 2
+else
+    TARGET_PATH=$(readlink -f "$executables_in_path")
+    echo "$TARGET_PATH"
+    exit 0
+fi
+
